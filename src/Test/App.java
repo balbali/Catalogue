@@ -1,5 +1,6 @@
 package Test;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,9 +10,9 @@ import Metier.Produit;
 import Metier.SingletonConnection;
 
 public class App {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 	//je déclare et je crée une connection
-     Connection conn=SingletonConnection.getConnetion();
+     Connection conn=SingletonConnection.getConnection();
 //     MetierCatalogueImp metier=new MetierCatalogueImp();
    //  metier.addCategorie(new Categorie("Ecran"));
      //metier.addCategorie(new Categorie("Clavier"));

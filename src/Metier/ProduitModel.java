@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 public class ProduitModel extends AbstractTableModel {
 	private String [] nomColonnes=new String [] {"ID","Désignation","Prix","Quantité","Catégorie"};
 	private Vector<String[]>rows=new Vector<String[]>();
+	MetierCatalogueImp metier=new MetierCatalogueImp();
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
@@ -39,5 +40,8 @@ public class ProduitModel extends AbstractTableModel {
 		}
 		fireTableChanged(null);
 
+	}
+	public List<Produit> getProduits() {
+	    return metier.getAllProduits();// ou le nom de votre liste de produits
 	}
 }

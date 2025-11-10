@@ -1,148 +1,197 @@
 package Presentation;
 
-import java.awt.EventQueue;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import Metier.SingletonConnection;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.awt.event.ActionEvent;
-/*
- * @author Balbali
- * @version 1.0
- */
 public class LoginFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField txtLogin;
-	private JPasswordField txtmdp;
-	private JButton btnValider=new JButton("Valider");
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField txtLogin;
+    private JPasswordField txtpwd;
 
-	/**
-	 * Launch the application.
-	 * Méthode Main
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginFrame frame = new LoginFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	 public LoginFrame() {
-		 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 setBounds(100, 100, 450, 300);
-		 contentPane = new JPanel();
-		 contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                LoginFrame frame = new LoginFrame();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
-		 setContentPane(contentPane);
-		 contentPane.setLayout(null);
+    public LoginFrame() {
+        initializeUI();
+        setupLayout();
+    }
 
-		 JLabel lblNewLabel = new JLabel("Authetification");
-		 lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 26));
-		 lblNewLabel.setBounds(90, 17, 261, 67);
-		 contentPane.add(lblNewLabel);
+    private void initializeUI() {
+        setTitle("Authentification");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 350);
+        setLocationRelativeTo(null);
 
-		 JLabel lblNewLabel_1 = new JLabel("Login");
-		 lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 16));
-		 lblNewLabel_1.setBounds(78, 95, 70, 42);
-		 contentPane.add(lblNewLabel_1);
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(0, 0, 139)); // Bleu foncé
+        contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
+        setContentPane(contentPane);
+    }
 
-		 JLabel lblNewLabel_2 = new JLabel("Mot de passe");
-		 lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 16));
-		 lblNewLabel_2.setBounds(78, 168, 109, 36);
-		 contentPane.add(lblNewLabel_2);
+    private void setupLayout() {
+        contentPane.setLayout(new GridBagLayout());
+        Insets insets = new Insets(10, 10, 10, 10);
 
-		 txtLogin = new JTextField();
-		 txtLogin.setBounds(197, 95, 134, 36);
-		 contentPane.add(txtLogin);
-		 txtLogin.setColumns(10);
+        // === Titre ===
+        JLabel lblTitle = new JLabel("Authentification", SwingConstants.CENTER);
+        lblTitle.setForeground(Color.WHITE);
+        lblTitle.setFont(new Font("Tahoma", Font.BOLD, 24));
+        GridBagConstraints gbcTitle = new GridBagConstraints();
+        gbcTitle.insets = insets;
+        gbcTitle.fill = GridBagConstraints.HORIZONTAL;
+        gbcTitle.gridx = 0;
+        gbcTitle.gridy = 0;
+        gbcTitle.gridwidth = 2;
+        contentPane.add(lblTitle, gbcTitle);
 
-		 txtmdp = new JPasswordField();
-		 txtmdp.setBounds(197, 173, 134, 30);
-		 contentPane.add(txtmdp);
-		 btnValider.addActionListener(new ActionListener() {
-		 	public void actionPerformed(ActionEvent e) {
-		 		authenticateUser();
-		 	}
-		 });
-		 btnValider.setFont(new Font("Tahoma", Font.BOLD, 16));
-		 btnValider.setBounds(175, 214, 109, 38);
-		 contentPane.add(btnValider);
+        // === Login ===
+        JLabel lblLogin = new JLabel("Login:");
+        lblLogin.setForeground(Color.WHITE);
+        lblLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
+        GridBagConstraints gbcLoginLabel = new GridBagConstraints();
+        gbcLoginLabel.insets = insets;
+        gbcLoginLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcLoginLabel.gridx = 0;
+        gbcLoginLabel.gridy = 1;
+        contentPane.add(lblLogin, gbcLoginLabel);
 
+        txtLogin = new JTextField();
+        txtLogin.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtLogin.setPreferredSize(new Dimension(200, 30));
+        GridBagConstraints gbcLoginField = new GridBagConstraints();
+        gbcLoginField.insets = insets;
+        gbcLoginField.fill = GridBagConstraints.HORIZONTAL;
+        gbcLoginField.gridx = 1;
+        gbcLoginField.gridy = 1;
+        gbcLoginField.weightx = 1.0;
+        contentPane.add(txtLogin, gbcLoginField);
 
+        // === Mot de passe ===
+        JLabel lblPassword = new JLabel("Mot de passe:");
+        lblPassword.setForeground(Color.WHITE);
+        lblPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
+        GridBagConstraints gbcPasswordLabel = new GridBagConstraints();
+        gbcPasswordLabel.insets = insets;
+        gbcPasswordLabel.fill = GridBagConstraints.HORIZONTAL;
+        gbcPasswordLabel.gridx = 0;
+        gbcPasswordLabel.gridy = 2;
+        contentPane.add(lblPassword, gbcPasswordLabel);
 
-		 JButton btnValider = new JButton("Valider");
-		 btnValider.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-				 authenticateUser();
-			 }
-		 });
+        txtpwd = new JPasswordField();
+        txtpwd.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        txtpwd.setPreferredSize(new Dimension(200, 30));
+        GridBagConstraints gbcPasswordField = new GridBagConstraints();
+        gbcPasswordField.insets = insets;
+        gbcPasswordField.fill = GridBagConstraints.HORIZONTAL;
+        gbcPasswordField.gridx = 1;
+        gbcPasswordField.gridy = 2;
+        gbcPasswordField.weightx = 1.0;
+        contentPane.add(txtpwd, gbcPasswordField);
 
+        // === Bouton Valider ===
+        JButton btnValider = createValiderButton();
+        GridBagConstraints gbcButton = new GridBagConstraints();
+        gbcButton.insets = insets;
+        gbcButton.gridx = 0;
+        gbcButton.gridy = 3;
+        gbcButton.gridwidth = 2;
+        gbcButton.anchor = GridBagConstraints.CENTER;
+        contentPane.add(btnValider, gbcButton);
 
+        // Listener pour Entrée
+        setupEnterKeyListener();
+    }
 
+    private JButton createValiderButton() {
+        JButton btnValider = new JButton("Valider");
+        btnValider.setBackground(new Color(0, 191, 255)); // Bleu clair
+        btnValider.setForeground(Color.BLACK);
+        btnValider.setFont(new Font("Tahoma", Font.BOLD, 14));
+        btnValider.setPreferredSize(new Dimension(120, 35));
+        btnValider.setFocusPainted(false);
 
+        btnValider.addActionListener(e -> authenticateUser());
+        return btnValider;
+    }
 
-		 txtmdp.addActionListener(new ActionListener() {
+    private void setupEnterKeyListener() {
+        KeyAdapter enterListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    authenticateUser();
+                }
+            }
+        };
+        txtLogin.addKeyListener(enterListener);
+        txtpwd.addKeyListener(enterListener);
+    }
 
-			 @Override
-			 public void actionPerformed(ActionEvent e) {
-				 authenticateUser();
+    private void authenticateUser() {
+        String login = txtLogin.getText().trim();
+        String pwd = new String(txtpwd.getPassword()).trim();
 
-			 }
-		 });
+        if (login.isEmpty() || pwd.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Veuillez remplir tous les champs!",
+                "Champs manquants",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-	 }
-	/**
-	 * Create the frame.
-	 */private void authenticateUser() {
-		 try {	String login=txtLogin.getText();
-		 String mdp=txtmdp.getText();
-		 Connection conn=SingletonConnection.getConnetion();
-		 String query="select login, mdp from utilisateur where login=? and mdp=?";
-		 PreparedStatement ps;
+        try (Connection conn = SingletonConnection.getConnection()) {
+            String query = "SELECT login, mdp FROM utilisateur WHERE login = ? AND mdp = ?";
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, login);
+                ps.setString(2, pwd);
 
-		 ps = conn.prepareStatement(query);
-		 ps.setString(1, login);
-		 ps.setString(2, mdp);
-		 ResultSet rs=ps.executeQuery();
-		 if(rs.next()) {
-			 dispose();
-			 CatalogueSwing cs=new CatalogueSwing();
-			 cs.setTitle("Authentification");
-			 cs.setVisible(true);
-			 JOptionPane.showMessageDialog(btnValider,"Connexion réussie au catalogue!!!");
-
-		 }else
-		 {
-			 JOptionPane.showMessageDialog(btnValider,"identifiat et/ou mot de passe erroné(s)!!!");
-		 }
-
-		 } catch (Exception e1) {
-			 // TODO Auto-generated catch block
-			 e1.printStackTrace();
-		 } }
-
-
-	
-
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(this,
+                            "Connexion réussie au catalogue!!!",
+                            "Succès",
+                            JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        CatalogueSwing cs = new CatalogueSwing();
+                        cs.setTitle("Catalogue");
+                        cs.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                            "Identifiant et/ou mot de passe erroné(s)!!!",
+                            "Erreur d'authentification",
+                            JOptionPane.ERROR_MESSAGE);
+                        txtpwd.setText("");
+                        txtLogin.requestFocus();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                "Erreur de connexion à la base de données: " + e.getMessage(),
+                "Erreur",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Erreur inattendue: " + e.getMessage(),
+                "Erreur",
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
 }
-

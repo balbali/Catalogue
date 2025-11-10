@@ -1,11 +1,22 @@
 package Metier;
-
+/*
+ * Classe Produit 
+ * @author Balbali
+ * @version 1
+ */
 public class Produit {
 	private String idProduit;
 	private String nomProduit;
 	private double prix;
 	private int quantite;
 	private Categorie uneCategorie;
+	/*
+	 * Constructeur
+	 * @param idProduit
+	 * @param nomProduit
+	 * @param  prix
+	 * @param quantite
+	 */
 	public Produit(String idProduit, String nomProduit, double prix, int quantite) {
 		super();
 		this.idProduit = idProduit;
@@ -13,9 +24,15 @@ public class Produit {
 		this.prix = prix;
 		this.quantite = quantite;
 	}
+	/*
+	 * constructeur sans paramètre
+	 */
 	public Produit() {
 		
 	}
+	/*
+	 * getter idProduit
+	 */
 	public String getIdProduit() {
 		return idProduit;
 	}
