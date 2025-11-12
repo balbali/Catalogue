@@ -4399,7 +4399,7 @@ public class CatalogueSwing extends JFrame {
             
             java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
             job.setJobName(titre);
-            
+            //exemple  2
             if (job.printDialog()) {
                 job.print();
                 JOptionPane.showMessageDialog(parentFrame,
