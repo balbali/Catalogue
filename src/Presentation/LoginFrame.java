@@ -128,6 +128,9 @@ public class LoginFrame extends JFrame {
         btnValider.addActionListener(e -> authenticateUser());
         return btnValider;
     }
+    public void calcul() {
+    	
+    }
 
     private void setupEnterKeyListener() {
         KeyAdapter enterListener = new KeyAdapter() {
