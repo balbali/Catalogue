@@ -268,4 +268,9 @@ List<Produit> lesProduits = new ArrayList<Produit>();
         
         return p;
     }
+
+	public Produit getProduitBycat(String nomCat, int idProduit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

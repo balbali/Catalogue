@@ -21,4 +21,5 @@ public interface IMetier {
     public void deleteProduit(String idProduit);
     public List<Produit> getAllProduits();
     public Produit getProduitById(String idProduit);
+    public Produit getProduitBycat(String nomCat, int idProduit);
 }
